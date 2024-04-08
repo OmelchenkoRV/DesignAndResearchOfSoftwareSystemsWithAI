@@ -1,9 +1,7 @@
 import keras
-
 import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
-
 from keras.models import Sequential
 from keras.losses import SparseCategoricalCrossentropy
 from keras.optimizers import Adam

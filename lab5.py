@@ -1,5 +1,6 @@
 import os
 import zipfile
+import matplotlib.pyplot as plt
 import tensorflow as tf
 import pandas as pd
 from keras import Model
@@ -108,5 +109,16 @@ history = model.fit(
     steps_per_epoch=x_train.samples // batch_size,
     validation_data=x_val,
     validation_steps=x_val.samples // batch_size,
-    epochs=10
+    epochs=15
 )
+
+plt.subplot(1,2,2)
+plt.plot(history.history['loss'], label='losses')
+plt.plot(history.history['val_loss'], label='validation losses')
+plt.xlabel('Epoch')
+plt.ylabel('Losses')
+plt.title('Losses graph')
+plt.legend()
+
+plt.tight_layout()
+plt.show()

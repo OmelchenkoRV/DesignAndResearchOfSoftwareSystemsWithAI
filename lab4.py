@@ -13,7 +13,18 @@ cifar10 = tf.keras.datasets.cifar10
 print("Train samples:", x_train.shape, y_train.shape)
 print("Test samples:", x_test.shape, y_test.shape)
 NUM_CLASSES = 10
-cifar10_classes = ['Plane', 'Car', 'Bird', 'Cat', 'Deer', 'Dog', 'Frog', 'Horse', 'Ship', 'Truck']
+class_labels = [
+    "Plane",
+    "Car",
+    "Bird",
+    "Cat",
+    "Deer",
+    "Dog",
+    "Frog",
+    "Horse",
+    "Boat",
+    "Truck"
+]
 
 x_train2 = (x_train / 255) - 0.5
 x_test2 = (x_test / 255) - 0.5
@@ -41,17 +52,17 @@ model = Sequential([
 
     layers.Flatten(),
     layers.Dense(4096, activation='relu'),
-    layers.Dropout(0.2),
+    layers.Dropout(0.5),
     layers.Dense(4096, activation='relu'),
-    layers.Dropout(0.2),
+    layers.Dropout(0.5),
     layers.Dense(10, activation='softmax')
 ])
 
 model.compile(loss=SparseCategoricalCrossentropy(from_logits=False),
-              optimizer=Adam(learning_rate=0.001),
+              optimizer=Adam(learning_rate=0.0005),
               metrics=['accuracy'])
 model.summary()
-history = model.fit(x_train, y_train, epochs=1, validation_data=(x_test, y_test))
+history = model.fit(x_train, y_train, epochs=30, validation_data=(x_test, y_test))
 y_pred_test = model.predict(x_test2)
 y_pred_test_classes = np.argmax(y_pred_test, axis=1)
 y_pred_test_max_probas = np.max(y_pred_test, axis=1)
@@ -66,9 +77,9 @@ for i in range(cols):
         ax.grid('off')
         ax.axis('off')
         ax.imshow(x_test[random_index, :])
-        pred_label = cifar10_classes[y_pred_test_classes[random_index]]
+        pred_label = class_labels[y_pred_test_classes[random_index]]
         pred_proba = y_pred_test_max_probas[random_index]
-        true_label = cifar10_classes[y_test[random_index, 0]]
+        true_label = class_labels[y_test[random_index, 0]]
         ax.set_title("pred: {}\nscore: {:.3}\ntrue: {}".format(
             pred_label, pred_proba, true_label
         ))

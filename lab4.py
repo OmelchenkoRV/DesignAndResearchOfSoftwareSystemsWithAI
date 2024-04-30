@@ -1,11 +1,8 @@
 import keras
-
 import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
-
 from keras.models import Sequential
-from keras.losses import SparseCategoricalCrossentropy
 from keras.optimizers import Adam
 from keras import layers
 
@@ -24,21 +21,22 @@ y_train = keras.utils.to_categorical(y_train)
 y_test = keras.utils.to_categorical(y_test)
 
 model = Sequential([
-    # First convolutional layer
+
     layers.Conv2D(filters=32, kernel_size=(4, 4), input_shape=(32, 32, 3), activation='relu'),
     layers.Dropout(0.1),
-    # Second convolutional layer
+
     layers.Conv2D(filters=32, kernel_size=(4, 4), activation='relu'),
     layers.MaxPool2D(pool_size=(2, 2)),
+
     layers.Conv2D(filters=64, kernel_size=(3, 3), activation='relu', padding='same'),
     layers.Dropout(0.2),
 
     layers.Conv2D(filters=64, kernel_size=(3, 3), activation='relu', padding='same'),
     layers.MaxPool2D(pool_size=(2, 2)),
-    # Pooling
+
     layers.Conv2D(filters=128, kernel_size=(3, 3), activation='relu', padding='same'),
     layers.Dropout(0.2),
-     # Dropout
+
     layers.Conv2D(filters=128, kernel_size=(3, 3), activation='relu', padding='same'),
     layers.MaxPool2D(pool_size=(2, 2)),
     layers.Flatten(),
